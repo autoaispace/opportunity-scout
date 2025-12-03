@@ -1,0 +1,69 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "continue": "Continue"
+  },
+  "auth": {
+    "loginTitle": "Discover Global Opportunities",
+    "loginSubtitle": "Sign in to get started",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "loginSuccess": "Login successful",
+    "loginError": "Login failed, please try again"
+  },
+  "feed": {
+    "title": "Opportunity Scout",
+    "subtitle": "AI-curated high-value demands daily",
+    "emptyTitle": "No opportunities yet",
+    "emptyDescription": "Check back later",
+    "loadMore": "Load More",
+    "painScore": "Pain Score",
+    "viewDetail": "View Details"
+  },
+  "demand": {
+    "summary": "Summary",
+    "description": "Description",
+    "competitors": "Competitor Analysis",
+    "trendChart": "Trend",
+    "roiEstimate": "ROI Estimate",
+    "source": "Source",
+    "tags": "Tags",
+    "difficulty": "Difficulty",
+    "marketSize": "Market Size"
+  },
+  "subscription": {
+    "freePlan": "Free",
+    "proPlan": "Pro",
+    "lifetimePlan": "Lifetime",
+    "currentPlan": "Current Plan",
+    "upgradeNow": "Upgrade Now",
+    "unlockFeature": "🔒 Upgrade to Unlock",
+    "features": {
+      "limitedView": "View latest 3 demands",
+      "unlimitedView": "Unlimited access",
+      "basicInfo": "Basic info only",
+      "fullAnalysis": "Full competitor & ROI analysis",
+      "noNotification": "No notifications",
+      "dailyDigest": "Daily digest push"
+    },
+    "pricing": {
+      "monthly": "$9.9 / month",
+      "yearly": "$99 / year",
+      "lifetime": "$199 / lifetime",
+      "bestValue": "Best Value"
+    }
+  },
+  "navigation": {
+    "feed": "Feed",
+    "saved": "Saved",
+    "upgrade": "Upgrade",
+    "notifications": "Notifications",
+    "profile": "Profile"
+  }
+}
+

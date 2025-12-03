@@ -1,0 +1,49 @@
+# Opportunity Scout - AI Coding Rules
+
+## Core Principles
+- **TypeScript Strict Mode**: ALWAYS enabled. NO `any` types allowed (use `unknown` if needed)
+- **Component Style**: ONLY Functional Components with hooks
+- **Server-First**: Default to Server Components unless interactivity required (then use 'use client')
+- **Mobile-First**: ALL styling must start with mobile breakpoint
+- **Type Safety**: Every function must have explicit return type
+- **No Prop Drilling**: Use Zustand for global state, Context for component trees
+
+## Code Style
+- **Naming**: camelCase for variables/functions, PascalCase for components/types
+- **File Structure**: One component per file, co-locate types in same file
+- **Imports**: Group by: React → External → Internal → Types → Styles
+- **Error Handling**: NEVER use try-catch without logging, prefer Result<T, E> pattern
+
+## Supabase Rules
+- **Direct Client**: NEVER instantiate Supabase client in components
+- **Access Layer**: ALL database calls go through `lib/db/api.ts`
+- **RLS First**: Trust RLS policies, don't duplicate checks in frontend
+- **Types**: Use `supabase gen types typescript` generated types
+
+## UI/UX Rules
+- **Dark Mode**: ONLY dark theme (no toggle)
+- **Responsive**: Test every component at 375px, 768px, 1440px
+- **Loading States**: Every async operation must show skeleton/spinner
+- **Empty States**: Every list must handle zero-state with illustration + CTA
+
+## i18n Rules
+- **No Hardcoded Strings**: ALL user-facing text must use `t('key')`
+- **Key Format**: Dot notation, e.g., `common.submit`, `auth.loginSuccess`
+- **Fallback**: ALWAYS provide `defaultMessage` in translation keys
+
+## Security Rules
+- **Env Vars**: Prefix with `NEXT_PUBLIC_` ONLY if needed in browser
+- **API Keys**: NEVER commit real keys, use `.env.local`
+- **Auth**: ALWAYS verify session server-side for protected routes
+
+## Performance Rules
+- **Images**: Use next/image with WebP format
+- **Fonts**: Subset fonts, preload critical fonts
+- **Bundle**: Keep client bundle < 200KB (use dynamic imports)
+- **Lighthouse**: Target score > 90 for Performance/Accessibility
+
+## Git Rules
+- **Commits**: Use conventional commits (feat:, fix:, chore:)
+- **Branches**: feature/*, bugfix/*, hotfix/*
+- NO force push to main
+

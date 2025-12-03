@@ -1,0 +1,69 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了",
+    "retry": "重试",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "continue": "继续"
+  },
+  "auth": {
+    "loginTitle": "开始探索全球商机",
+    "loginSubtitle": "使用以下方式快速登录",
+    "continueWithGoogle": "使用 Google 继续",
+    "continueWithApple": "使用 Apple 继续",
+    "loginSuccess": "登录成功",
+    "loginError": "登录失败，请重试"
+  },
+  "feed": {
+    "title": "商机情报站",
+    "subtitle": "AI 每日挖掘的高价值需求",
+    "emptyTitle": "暂无商机",
+    "emptyDescription": "稍后再来看看",
+    "loadMore": "加载更多",
+    "painScore": "痛点指数",
+    "viewDetail": "查看详情"
+  },
+  "demand": {
+    "summary": "需求摘要",
+    "description": "详细描述",
+    "competitors": "竞品分析",
+    "trendChart": "热度趋势",
+    "roiEstimate": "ROI 预估",
+    "source": "来源",
+    "tags": "标签",
+    "difficulty": "开发难度",
+    "marketSize": "市场规模"
+  },
+  "subscription": {
+    "freePlan": "免费版",
+    "proPlan": "专业版",
+    "lifetimePlan": "终身版",
+    "currentPlan": "当前方案",
+    "upgradeNow": "立即升级",
+    "unlockFeature": "🔒 升级解锁",
+    "features": {
+      "limitedView": "查看最新 3 条需求",
+      "unlimitedView": "无限查看所有需求",
+      "basicInfo": "基础信息",
+      "fullAnalysis": "完整竞品与 ROI 分析",
+      "noNotification": "无推送",
+      "dailyDigest": "每日精选推送"
+    },
+    "pricing": {
+      "monthly": "¥99 / 月",
+      "yearly": "¥999 / 年",
+      "lifetime": "¥1999 / 终身",
+      "bestValue": "最超值"
+    }
+  },
+  "navigation": {
+    "feed": "发现",
+    "saved": "收藏",
+    "upgrade": "升级",
+    "notifications": "通知",
+    "profile": "我的"
+  }
+}
+
