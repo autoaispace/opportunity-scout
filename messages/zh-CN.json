@@ -64,10 +64,6 @@
     "upgrade": "升级",
     "notifications": "通知",
     "profile": "我的"
-  },
-  "ads": {
-    "placeholderLabel": "广告位（占位）",
-    "placeholderDescription": "在环境变量中配置 Google Ads client 和 slot ID 后，将在此展示广告。"
   }
 }
 

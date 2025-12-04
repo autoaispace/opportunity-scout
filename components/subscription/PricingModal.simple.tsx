@@ -45,24 +45,10 @@ export function PricingModal({ open, onOpenChange }: PricingModalProps) {
   const [loading, setLoading] = useState<PlanId | null>(null)
   const router = useRouter()
 
-  const handleSelectPlan = async (planId: PlanId) => {
+  const handleSelectPlan = (planId: PlanId) => {
     setLoading(planId)
-    
-    try {
-      const provider = getPaymentProvider()
-      const session = await provider.createCheckoutSession(
-        planId,
-        'demo_user',
-        `${window.location.origin}/checkout/success`,
-        `${window.location.origin}/checkout/cancel`
-      )
-      
-      // 跳转到 Mock 支付页面
-      router.push(session.url)
-    } catch (error) {
-      console.error('Checkout error:', error)
-      setLoading(null)
-    }
+    // 所有套餐统一跳转到 Whop 测试订阅链接
+    router.push('https://whop.com/8429d376-ddb2-4fb6-bebf-b81b25deff04/test-7d-00b2')
   }
 
   return (

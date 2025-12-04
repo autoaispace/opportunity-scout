@@ -3,7 +3,6 @@ import { DatabaseAPI } from '@/lib/db/api'
 import { DemandListClient } from '@/components/feed/DemandListClient'
 import { AppShell } from '@/components/layout/AppShell.simple'
 import { UserStatusBanner } from '@/components/common/UserStatusBanner'
-import { AdBanner } from '@/components/common/AdBanner'
 
 export default async function FeedPage() {
   const demands = await DatabaseAPI.getDemandsFeed(20, true)
@@ -25,10 +24,6 @@ export default async function FeedPage() {
           <div className="mt-4">
             <UserStatusBanner />
           </div>
-        </div>
-
-        <div className="mb-6">
-          <AdBanner slot="feed" />
         </div>
 
         <DemandListClient demands={demands} />

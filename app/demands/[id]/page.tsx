@@ -5,7 +5,6 @@ import { AppShell } from '@/components/layout/AppShell.simple'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { AdBanner } from '@/components/common/AdBanner'
 
 interface DemandPageProps {
   params: Promise<{
@@ -38,10 +37,6 @@ export default async function DemandPage({ params }: DemandPageProps) {
         </Button>
 
         <DemandDetailClient demand={demand} />
-
-        <div className="mt-8">
-          <AdBanner slot="demandDetail" />
-        </div>
       </div>
     </AppShell>
   )
