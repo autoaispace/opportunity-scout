@@ -64,6 +64,10 @@
     "upgrade": "Upgrade",
     "notifications": "Notifications",
     "profile": "Profile"
+  },
+  "ads": {
+    "placeholderLabel": "Ad space (placeholder)",
+    "placeholderDescription": "Configure Google Ads client & slot IDs in environment variables to enable ads."
   }
 }
 

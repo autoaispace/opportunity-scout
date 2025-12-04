@@ -15,7 +15,7 @@ export function UpgradeButton() {
         className="bg-gradient-to-r from-accent-gold via-yellow-500 to-accent-gold text-core-bg font-semibold hover:shadow-glow-gold"
       >
         <Sparkles className="w-4 h-4 mr-2" />
-        立即升级
+        Upgrade now
       </Button>
 
       <PricingModal open={open} onOpenChange={setOpen} />

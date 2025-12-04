@@ -19,10 +19,8 @@ export function UserStatusBanner() {
   }
 
   useEffect(() => {
-    // 初始检查
     checkUserStatus()
 
-    // 监听用户升级事件
     window.addEventListener('user-upgraded', checkUserStatus)
     
     return () => {
@@ -34,7 +32,7 @@ export function UserStatusBanner() {
     return (
       <div className="p-3 bg-text-dim/10 border border-text-dim/20 rounded-lg">
         <p className="text-sm text-text-body">
-          💡 提示：<a href="/login" className="text-accent-primary underline">登录</a>后可查看更多需求
+          💡 Tip: <a href="/login" className="text-accent-primary underline">Log in</a> to see more demands
         </p>
       </div>
     )
@@ -44,7 +42,7 @@ export function UserStatusBanner() {
     return (
       <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
         <p className="text-sm text-green-400">
-          🔥 <strong>Pro 会员</strong>：享受无限访问权限
+          🔥 <strong>Pro member</strong>: unlimited access
         </p>
       </div>
     )
@@ -53,7 +51,7 @@ export function UserStatusBanner() {
   return (
     <div className="p-3 bg-accent-primary/10 border border-accent-primary/20 rounded-lg">
       <p className="text-sm text-accent-primary">
-        🎭 演示模式：当前以<strong>免费用户</strong>身份浏览（可查看 3 条需求）
+        🎭 Demo mode: currently browsing as a <strong>free user</strong> (can view 3 demands)
       </p>
     </div>
   )
