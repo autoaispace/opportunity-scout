@@ -38,23 +38,34 @@ export class DatabaseAPI {
   ): Promise<(DemandFree | DemandPro)[]> {
     try {
       const supabase = await createClient()
-      
-      // Select fields based on subscription status
-      const selectFields = isPro
-        ? '*' // Pro users get everything
-        : 'id, title, summary, pain_score, source_url, created_at, tags'
-      
+
+      if (isPro) {
+        const { data, error } = await supabase
+          .from('demands')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(limit)
+          .returns<DemandPro[]>()
+
+        if (error) {
+          console.error('Error fetching demands:', error)
+          return []
+        }
+        return data ?? []
+      }
+
       const { data, error } = await supabase
         .from('demands')
-        .select(selectFields)
+        .select('id, title, summary, pain_score, source_url, created_at, tags')
         .order('created_at', { ascending: false })
         .limit(limit)
-      
+        .returns<DemandFree[]>()
+
       if (error) {
         console.error('Error fetching demands:', error)
         return []
       }
-      return data || []
+      return data ?? []
     } catch (error) {
       console.error('Failed to fetch demands:', error)
       return []
@@ -70,15 +81,29 @@ export class DatabaseAPI {
   ): Promise<DemandFree | DemandPro | null> {
     try {
       const supabase = await createClient()
-      
-      const selectFields = isPro ? '*' : 'id, title, summary, pain_score, source_url, created_at, tags'
-      
+
+      if (isPro) {
+        const { data, error } = await supabase
+          .from('demands')
+          .select('*')
+          .eq('id', id)
+          .returns<DemandPro>()
+          .single()
+
+        if (error) {
+          console.error('Error fetching demand:', error)
+          return null
+        }
+        return data
+      }
+
       const { data, error } = await supabase
         .from('demands')
-        .select(selectFields)
+        .select('id, title, summary, pain_score, source_url, created_at, tags')
         .eq('id', id)
+        .returns<DemandFree>()
         .single()
-      
+
       if (error) {
         console.error('Error fetching demand:', error)
         return null

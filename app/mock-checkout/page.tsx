@@ -1,12 +1,26 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Check, Loader2, CreditCard } from 'lucide-react'
 
 export default function MockCheckoutPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center p-4 bg-core-bg">
+          <Loader2 className="w-6 h-6 animate-spin text-accent-primary" />
+        </div>
+      }
+    >
+      <MockCheckoutContent />
+    </Suspense>
+  )
+}
+
+function MockCheckoutContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   

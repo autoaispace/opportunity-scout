@@ -38,6 +38,9 @@ export interface DemandPro extends DemandFree {
   source_platform: string | null
 }
 
+// Demand can be either the free or pro variant depending on user access
+export type Demand = DemandFree | DemandPro
+
 export interface Competitor {
   name: string
   url: string

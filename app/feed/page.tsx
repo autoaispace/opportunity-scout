@@ -4,6 +4,9 @@ import { DemandListClient } from '@/components/feed/DemandListClient'
 import { AppShell } from '@/components/layout/AppShell.simple'
 import { UserStatusBanner } from '@/components/common/UserStatusBanner'
 
+// Feed depends on cookies/session; disable static prerendering
+export const dynamic = 'force-dynamic'
+
 export default async function FeedPage() {
   const demands = await DatabaseAPI.getDemandsFeed(20, true)
 
