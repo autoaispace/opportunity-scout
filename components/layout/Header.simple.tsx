@@ -1,31 +1,49 @@
 'use client'
 
-import { Sparkles, User, LogOut } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { UpgradeButton } from '@/components/subscription/UpgradeButton.simple'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import type { User } from '@supabase/supabase-js'
+import { UserInfo } from '@/components/auth/UserInfo'
 
 export function Header() {
   const router = useRouter()
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [demoUser, setDemoUser] = useState<any>(null)
   const [showMenu, setShowMenu] = useState(false)
 
-  const checkUserStatus = () => {
-    const demoUser = localStorage.getItem('demo_user')
-    if (demoUser) {
-      setUser(JSON.parse(demoUser))
-    } else {
-      setUser(null)
-    }
-  }
-
   useEffect(() => {
-    // 初始检查
-    checkUserStatus()
+    const supabase = createClient()
 
-    // 监听用户升级事件
-    window.addEventListener('user-upgraded', checkUserStatus)
+    // Check for real Supabase user
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser(session.user)
+      }
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    // Check for demo user
+    const checkDemoUser = () => {
+      const demo = localStorage.getItem('demo_user')
+      if (demo) {
+        setDemoUser(JSON.parse(demo))
+      } else {
+        setDemoUser(null)
+      }
+    }
+
+    checkDemoUser()
+    window.addEventListener('user-upgraded', checkDemoUser)
 
     // 点击外部关闭菜单
     const handleClickOutside = () => setShowMenu(false)
@@ -34,17 +52,21 @@ export function Header() {
     }
     
     return () => {
-      window.removeEventListener('user-upgraded', checkUserStatus)
+      subscription.unsubscribe()
+      window.removeEventListener('user-upgraded', checkDemoUser)
       document.removeEventListener('click', handleClickOutside)
     }
   }, [showMenu])
 
   const handleLogout = () => {
     localStorage.removeItem('demo_user')
-    setUser(null)
+    setDemoUser(null)
     setShowMenu(false)
     router.push('/login')
   }
+
+  // Use real user if available, otherwise fall back to demo user
+  const currentUser = user || demoUser
 
   return (
     <header className="sticky top-0 z-40 w-full bg-core-bg/95 backdrop-blur-sm border-b border-glass-border">
@@ -66,6 +88,10 @@ export function Header() {
           </div>
 
           {user ? (
+            // Real Supabase user
+            <UserInfo showMenu={true} />
+          ) : demoUser ? (
+            // Demo user fallback
             <div className="relative">
               <button
                 onClick={(e) => {
@@ -75,28 +101,28 @@ export function Header() {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-main/50 transition-colors"
               >
                 <div className="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center">
-                  <User className="w-4 h-4 text-accent-primary" />
+                  <Sparkles className="w-4 h-4 text-accent-primary" />
                 </div>
                 <span className="text-sm text-text-body hidden sm:inline">
-                  {user.name}
+                  {demoUser.name || 'Demo User'}
                 </span>
               </button>
 
               {showMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-surface-main border border-glass-border rounded-lg shadow-lg overflow-hidden">
+                <div className="absolute right-0 mt-2 w-48 bg-surface-main border border-glass-border rounded-lg shadow-lg overflow-hidden z-50">
                   <div className="px-4 py-3 border-b border-glass-border">
-                    <p className="text-sm font-medium text-text-main">{user.name}</p>
-                    <p className="text-xs text-text-dim">{user.email}</p>
+                    <p className="text-sm font-medium text-text-main">{demoUser.name || 'Demo User'}</p>
+                    <p className="text-xs text-text-dim">{demoUser.email}</p>
                     <p className="text-xs text-accent-primary mt-1">
-                      {user.isPro ? '🔥 Pro 会员' : '免费版'}
+                      {demoUser.isPro ? '🔥 Pro 会员' : '免费版 (Demo)'}
                     </p>
                   </div>
                   <button
                     onClick={handleLogout}
                     className="w-full px-4 py-3 text-left text-sm text-text-body hover:bg-surface-dim transition-colors flex items-center gap-2"
                   >
-                    <LogOut className="w-4 h-4" />
-                    退出登录
+                    <Sparkles className="w-4 h-4" />
+                    退出 Demo
                   </button>
                 </div>
               )}

@@ -40,13 +40,17 @@ export function OAuthButtons() {
         // Redirect to OAuth provider
         window.location.href = result.data.url
       } else {
-        console.error('OAuth error:', result.error)
-        alert('登录失败，请重试: ' + result.error)
+        console.error('[OAuth] Login failed:', result.error)
+        
+        // Show user-friendly error message
+        const errorMessage = result.error || '登录失败，请重试'
+        alert(`登录失败: ${errorMessage}`)
         setLoading(null)
       }
     } catch (error) {
-      console.error('OAuth error:', error)
-      alert('登录失败，请重试')
+      console.error('[OAuth] Unexpected error:', error)
+      const errorMessage = error instanceof Error ? error.message : '登录失败，请重试'
+      alert(`登录失败: ${errorMessage}`)
       setLoading(null)
     }
   }

@@ -8,9 +8,19 @@ export class DatabaseAPI {
   static async getProfile(): Promise<Profile | null> {
     try {
       const supabase = await createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
       
-      if (!user) return null
+      if (userError) {
+        // Don't log JWT/session errors as they're expected for unauthenticated users
+        if (!userError.message.includes('JWT') && !userError.message.includes('session')) {
+          console.error('[DatabaseAPI] Get user error:', userError.message)
+        }
+        return null
+      }
+      
+      if (!user) {
+        return null
+      }
       
       const { data, error } = await supabase
         .from('profiles')
@@ -18,11 +28,23 @@ export class DatabaseAPI {
         .eq('id', user.id)
         .single()
       
-      if (error) throw error
+      if (error) {
+        // Profile doesn't exist yet (PGRST116 = no rows returned)
+        if (error.code === 'PGRST116') {
+          console.log('[DatabaseAPI] Profile not found for user:', user.id)
+          return null
+        }
+        console.error('[DatabaseAPI] Get profile error:', {
+          userId: user.id,
+          error: error.message,
+          code: error.code,
+        })
+        return null
+      }
+      
       return data
     } catch (error) {
-      // 演示模式：如果获取失败，返回 null（不登录）
-      console.log('No user logged in (demo mode)')
+      console.error('[DatabaseAPI] Unexpected error getting profile:', error)
       return null
     }
   }
@@ -124,37 +146,74 @@ export class DatabaseAPI {
     plan: string | null = null,
     expiresAt: string | null = null
   ): Promise<void> {
-    const supabase = await createClient()
-    
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        subscription_status: status,
-        subscription_plan: plan,
-        subscription_expires_at: expiresAt,
+    try {
+      const supabase = await createClient()
+      
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          subscription_status: status,
+          subscription_plan: plan,
+          subscription_expires_at: expiresAt,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', userId)
+      
+      if (error) {
+        console.error('[DatabaseAPI] Update subscription error:', {
+          userId,
+          status,
+          error: error.message,
+          code: error.code,
+        })
+        throw error
+      }
+      
+      console.log('[DatabaseAPI] Subscription updated successfully:', {
+        userId,
+        status,
+        plan,
       })
-      .eq('id', userId)
-    
-    if (error) throw error
+    } catch (error) {
+      console.error('[DatabaseAPI] Unexpected error updating subscription:', error)
+      throw error
+    }
   }
 
   /**
    * Track demand view
    */
   static async trackDemandView(demandId: string): Promise<void> {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    if (!user) return
-    
-    await supabase
-      .from('user_views')
-      .insert({
-        user_id: user.id,
-        demand_id: demandId,
-      })
-      .select()
-      // Ignore conflict (already viewed)
+    try {
+      const supabase = await createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        // Silently fail for unauthenticated users
+        return
+      }
+      
+      const { error } = await supabase
+        .from('user_views')
+        .insert({
+          user_id: user.id,
+          demand_id: demandId,
+        })
+        .select()
+      
+      // Ignore conflict errors (user already viewed this demand)
+      if (error && error.code !== '23505') {
+        console.error('[DatabaseAPI] Track view error:', {
+          userId: user.id,
+          demandId,
+          error: error.message,
+          code: error.code,
+        })
+      }
+    } catch (error) {
+      // Silently fail - view tracking is not critical
+      console.error('[DatabaseAPI] Unexpected error tracking view:', error)
+    }
   }
 }
 

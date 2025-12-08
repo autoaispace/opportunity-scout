@@ -74,6 +74,17 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_USE_MOCK_PAYMENT=true
 ```
 
+**重要提示：获取 Supabase 密钥**
+
+1. 访问 [Supabase Dashboard](https://app.supabase.com) → 选择你的项目
+2. 进入 **Settings → API**
+3. 复制以下值：
+   - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
+   - **anon public** key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - **service_role** key → `SUPABASE_SERVICE_ROLE_KEY` ⚠️ **必须是 JWT token（200+ 字符），不是自定义值**
+
+⚠️ **警告**：`SUPABASE_SERVICE_ROLE_KEY` 必须是从 Supabase Dashboard 获取的真实 service_role key（JWT 格式），不能是自定义值。它用于绕过 RLS 进行管理员操作。
+
 ### 2. 安装依赖
 
 ```bash

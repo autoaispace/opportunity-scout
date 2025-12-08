@@ -1,11 +1,33 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { OAuthButtons } from '@/components/auth/OAuthButtons.simple'
-import { Sparkles, Play } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { Sparkles, Play, AlertCircle } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    const message = searchParams.get('message')
+
+    if (error) {
+      const errorMessages: Record<string, string> = {
+        auth_failed: 'Authentication failed. Please try again.',
+        exchange_failed: 'Failed to complete authentication. Please try again.',
+        no_code: 'No authorization code received.',
+        no_user: 'User data not found. Please try again.',
+        no_email: 'Email address is required. Please try a different account.',
+        oauth_error: message || 'OAuth provider error occurred.',
+        unexpected: message || 'An unexpected error occurred. Please try again.',
+      }
+
+      setErrorMessage(errorMessages[error] || 'An error occurred during login.')
+    }
+  }, [searchParams])
 
   const handleDemoLogin = () => {
     localStorage.setItem('demo_user', JSON.stringify({
@@ -55,6 +77,17 @@ export default function LoginPage() {
             <span className="px-4 bg-core-bg text-text-dim">or continue with OAuth</span>
           </div>
         </div>
+
+        {/* Error Message */}
+        {errorMessage && (
+          <div className="mb-6 p-4 rounded-lg bg-error/10 border border-error/20 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-error shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-error mb-1">Login Error</p>
+              <p className="text-xs text-text-body">{errorMessage}</p>
+            </div>
+          </div>
+        )}
 
         {/* OAuth Buttons */}
         <div className="flex justify-center mb-6">
