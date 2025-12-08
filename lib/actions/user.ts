@@ -180,7 +180,7 @@ export async function getCurrentUserProfile(): Promise<Profile | null> {
 /**
  * Extract user metadata from OAuth provider response
  */
-export function extractUserMetadata(user: {
+export async function extractUserMetadata(user: {
   email?: string
   user_metadata?: Record<string, unknown>
   app_metadata?: Record<string, unknown>
