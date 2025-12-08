@@ -140,7 +140,7 @@ export async function signOut(): Promise<ActionResult<void>> {
 /**
  * Get current session
  */
-export async function getSession() {
+export async function getSession(): Promise<import('@supabase/supabase-js').Session | null> {
   try {
     const supabase = await createClient()
     const { data: { session }, error } = await supabase.auth.getSession()
@@ -161,7 +161,7 @@ export async function getSession() {
  * Get current authenticated user
  * Automatically refreshes the session if needed
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<import('@supabase/supabase-js').User | null> {
   try {
     const supabase = await createClient()
     const { data: { user }, error } = await supabase.auth.getUser()

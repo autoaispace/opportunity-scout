@@ -80,7 +80,7 @@ export async function GET(request: Request) {
     })
 
     // Extract user metadata from OAuth provider
-    const userMetadata = extractUserMetadata(data.user)
+    const userMetadata = await extractUserMetadata(data.user)
 
     // Validate required fields
     if (!userMetadata.email) {

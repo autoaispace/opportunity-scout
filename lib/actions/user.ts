@@ -184,12 +184,12 @@ export async function extractUserMetadata(user: {
   email?: string
   user_metadata?: Record<string, unknown>
   app_metadata?: Record<string, unknown>
-}): {
+}): Promise<{
   email: string
   display_name: string | null
   avatar_url: string | null
   provider: 'google' | 'apple'
-} {
+}> {
   const provider = (user.app_metadata?.provider as 'google' | 'apple') || 'google'
   
   // Extract name from different possible fields

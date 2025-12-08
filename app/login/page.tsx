@@ -1,11 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { OAuthButtons } from '@/components/auth/OAuthButtons.simple'
 import { Sparkles, Play, AlertCircle } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <LoginContent />
+    </Suspense>
+  )
+}
+
+function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -105,6 +113,16 @@ export default function LoginPage() {
             Opportunity Scout · AI-powered opportunity discovery platform
           </p>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function LoginFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 bg-core-bg">
+      <div className="w-full max-w-md text-center text-text-dim text-sm">
+        Loading...
       </div>
     </div>
   )
