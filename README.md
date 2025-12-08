@@ -1,4 +1,4 @@
-# Opportunity Scout 🎯
+# GoldMine AI - 产品
 
 **AI 驱动的海外商机情报站** - 为出海开发者每日挖掘高价值需求
 
