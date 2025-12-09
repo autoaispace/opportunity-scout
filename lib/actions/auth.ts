@@ -18,10 +18,18 @@ export async function signInWithOAuth(
     try {
       env = getEnvConfig()
     } catch (envError) {
-      console.error('[Auth] Environment validation failed:', envError)
+      const errorMessage = envError instanceof Error ? envError.message : 'Missing required environment variables'
+      console.error('[Auth] Environment validation failed:', {
+        error: errorMessage,
+        hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        hasServiceRoleKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+        hasSiteUrl: !!process.env.NEXT_PUBLIC_SITE_URL,
+        nodeEnv: process.env.NODE_ENV,
+      })
       return {
         success: false,
-        error: `Server configuration error: ${envError instanceof Error ? envError.message : 'Missing required environment variables'}. Please contact support.`,
+        error: `Server configuration error: ${errorMessage}. Please check environment variables.`,
       }
     }
 
